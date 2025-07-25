@@ -1,5 +1,3 @@
-// src/components/Sidebar.tsx
-
 import {
   Drawer,
   List,
@@ -8,34 +6,25 @@ import {
   ListItemText,
 } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { SidebarRoutes } from '../SidebarRoutes/SidebarRoutes'
+import { SidebarRoutes } from '../SidebarRoutes/SidebarRoutes';
+import {
+  drawerStyles,
+  drawerWidth,
+  listItemButtonStyles,
+  listItemIconStyles,
+} from '../../styles/SidebarStyles/SidebarStyles.styles';
 
 interface SidebarProps {
   selected: string;
   setSelected: (value: string) => void;
 }
 
-const drawerWidth = 240;
-
 const Sidebar = ({ selected, setSelected }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   return (
-    <Drawer
-      variant="permanent"
-      anchor="left"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        [`& .MuiDrawer-paper`]: {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-          backgroundColor: '#1E1E2F',
-          color: '#fff',
-        },
-      }}
-    >
+    <Drawer variant="permanent" anchor="left" sx={drawerStyles}>
       <List>
         {SidebarRoutes.map((item) => (
           <ListItemButton
@@ -45,17 +34,9 @@ const Sidebar = ({ selected, setSelected }: SidebarProps) => {
               setSelected(item.label);
               navigate(item.path);
             }}
-            sx={{
-              '&.Mui-selected': {
-                backgroundColor: '#3F3F57',
-              },
-              '&:hover': {
-                backgroundColor: '#2E2E47',
-              },
-              color: '#fff',
-            }}
+            sx={listItemButtonStyles}
           >
-            <ListItemIcon sx={{ color: '#fff' }}>{item.icon}</ListItemIcon>
+            <ListItemIcon sx={listItemIconStyles}>{item.icon}</ListItemIcon>
             <ListItemText primary={item.label} />
           </ListItemButton>
         ))}

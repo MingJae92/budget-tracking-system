@@ -1,18 +1,17 @@
 // src/App.tsx
 
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Dashboard from './pages/Dashboard/Dashboard'
-import Accounts from './pages/AccountsPage/AccountsPage';
-import Payments from './pages/PaymentsPage/PaymentsPage';
-import CreateAccount from './pages/CreateAccountPage/CreateAccountPage';
-import CreatePayment from './pages/CreatePaymentPage/CreatePaymentPage';
+import { Routes, Route, Navigate } from "react-router-dom";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Accounts from "./pages/AccountsPage/AccountsPage";
+import Payments from "./pages/PaymentsPage/PaymentsPage";
+import CreateAccount from "./pages/CreateAccountPage/CreateAccountPage";
+import CreatePayment from "./pages/CreatePaymentPage/CreatePaymentPage";
 
 const App = () => {
   return (
     <Routes>
       {/* Protected routes under /dashboard */}
       <Route path="/" element={<Dashboard />}>
-        <Route index element={<Navigate to="accounts" replace />} />
         <Route path="accounts" element={<Accounts />} />
         <Route path="payments" element={<Payments />} />
         <Route path="create-account" element={<CreateAccount />} />
@@ -25,7 +24,6 @@ const App = () => {
 };
 
 export default App;
-
 
 // import { ThemeProvider } from '@mui/material/styles';
 // import CssBaseline from '@mui/material/CssBaseline';
@@ -45,4 +43,3 @@ export default App;
 // };
 
 // export default App;
-
