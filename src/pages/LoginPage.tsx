@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Wrapper, Container } from "../styles/LayoutStyles/LayoutSyles.styles";
 import {
-  Wrapper,
-  Container,
   LeftSide,
   LeftContent,
   RightSide,
+} from "../styles/SidePanelStyles/SidePanelStyles.styles";
+import {
   Heading,
   Subheading,
+} from "../styles/TypographyStyles/TypographyStyles.styles";
+import {
   StyledTextField,
   StyledButton,
   SocialButton,
-} from '../styles/Login/Login.styles';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
-import { Visibility, VisibilityOff, Google, Apple } from '@mui/icons-material';
+} from "../styles/FormStyles/FormStyles.styles";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
+import { Visibility, VisibilityOff, Google } from "@mui/icons-material";
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const togglePasswordVisibility = () => setShowPassword((v) => !v);
 
@@ -26,7 +29,8 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login:', formData);
+    console.log("Login data:", formData);
+    // TODO: Validate and send to backend/auth logic
   };
 
   return (
@@ -34,16 +38,19 @@ const LoginPage: React.FC = () => {
       <Container>
         <LeftSide>
           <LeftContent>
-            <h1 style={{ fontWeight: '800', fontSize: '2.4rem', marginBottom: 8 }}>
+            <h1
+              style={{ fontWeight: 800, fontSize: "2.4rem", marginBottom: 8 }}
+            >
               Welcome Back
             </h1>
-            <p style={{ maxWidth: 300, fontSize: '1rem', lineHeight: 1.5 }}>
+            <p style={{ maxWidth: 300, fontSize: "1rem", lineHeight: 1.5 }}>
               Sign in to continue booking your dream hotel stays.
             </p>
           </LeftContent>
         </LeftSide>
+
         <RightSide>
-          <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
             <Heading>Sign In</Heading>
             <Subheading>Please enter your credentials below</Subheading>
 
@@ -65,14 +72,20 @@ const LoginPage: React.FC = () => {
                 variant="standard"
                 label="Password"
                 name="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleChange}
                 InputProps={{
                   disableUnderline: true,
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                      <IconButton
+                        onClick={togglePasswordVisibility}
+                        edge="end"
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                      >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
@@ -87,9 +100,6 @@ const LoginPage: React.FC = () => {
 
             <SocialButton fullWidth startIcon={<Google />}>
               Continue with Google
-            </SocialButton>
-            <SocialButton fullWidth startIcon={<Apple />}>
-              Continue with Apple
             </SocialButton>
           </form>
         </RightSide>
