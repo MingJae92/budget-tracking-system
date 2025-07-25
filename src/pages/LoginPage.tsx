@@ -30,7 +30,6 @@ const LoginPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Login data:", formData);
-    // TODO: Validate and send to backend/auth logic
   };
 
   return (
@@ -62,6 +61,8 @@ const LoginPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                multiline
+                minRows={3}
                 InputProps={{ disableUnderline: true }}
               />
             </StyledTextField>
@@ -75,6 +76,8 @@ const LoginPage = () => {
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleChange}
+                multiline
+                minRows={3}
                 InputProps={{
                   disableUnderline: true,
                   endAdornment: (
