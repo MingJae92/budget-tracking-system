@@ -1,80 +1,86 @@
-import type { SxProps, Theme } from '@mui/material/styles';
+// styles/loginStyles/loginStyles.styles.ts
+import { styled } from "@mui/material/styles";
+import { Box, Typography } from "@mui/material";
 
-export const rootSx: SxProps<Theme> = {
-  height: '100vh',
-  display: 'flex',
-  justifyContent: 'center',  // centers container horizontally
-  alignItems: 'center',      // centers container vertically
-  bgcolor: '#f5f5f5',
-  px: 2,
-  boxSizing: 'border-box',
-};
+export const Wrapper = styled(Box)({
+  height: "100vh",
+  width: "100vw",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "#f0f2f5",          // Light background
+  fontFamily: "'Inter', sans-serif",
+});
 
-export const containerSx: SxProps<Theme> = {
-  display: 'flex',
-  // Removed width: '100%' so container only takes necessary width
+export const ContainerBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row",
+  width: "90%",
   maxWidth: 900,
-  boxShadow: 3,
-  borderRadius: 3,
-  overflow: 'hidden',
-  bgcolor: 'background.paper',
-};
+  height: 500,                         // Fixed height for layout consistency
+  borderRadius: theme.spacing(2),
+  boxShadow: "0 12px 32px rgba(0, 0, 0, 0.1)",
+  overflow: "hidden",
+  backgroundColor: "#fff",
+}));
 
-export const leftHeroSx: SxProps<Theme> = {
-  flex: 1,
-  position: 'relative',
-  background: 'linear-gradient(135deg, #506050, #304030)',
-  color: '#fff',
-  px: 6,
-  py: 8,
-  display: { xs: 'none', md: 'flex' }, // hide on small screens
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  overflow: 'hidden',
-};
+// Left side with hero gradient background (replacing ImageBox)
+export const ImageBox = styled(Box)(({ theme }) => ({
+  width: "50%",
+  height: "100%",
+  background: 'linear-gradient(135deg, #506050, #304030)',  // Your gradient
+  color: "#fff",
+  padding: theme.spacing(6),
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  position: "relative",
+}));
 
-export const heroLogoSx: SxProps<Theme> = {
+export const HeroLogo = styled(Box)(({ theme }) => ({
   width: 64,
   height: 64,
-  borderRadius: '50%',
-  bgcolor: 'rgba(79,172,181,0.9)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  mr: 2,
-  fontWeight: 'bold',
+  borderRadius: "50%",
+  backgroundColor: "rgba(79,172,181,0.9)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  marginRight: theme.spacing(2),
+  fontWeight: "bold",
   fontSize: 28,
-  userSelect: 'none',
-};
+  userSelect: "none",
+}));
 
-export const rightFormSx: SxProps<Theme> = {
-  flex: 1,
-  bgcolor: 'background.default',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  px: 6,
-  py: 8,
-  maxWidth: { xs: '100%', md: 480 },
-};
+export const FormBox = styled(Box)(({ theme }) => ({
+  width: "50%",
+  padding: theme.spacing(6),
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: theme.spacing(3),
+  backgroundColor: theme.palette.background.default,
+  maxWidth: 480,
+}));
 
-export const backButtonSx: SxProps<Theme> = {
-  bgcolor: 'rgba(79,172,181,0.2)',
-  color: 'rgba(79,172,181,0.9)',
-  width: 60,
-  height: 60,
-  mb: 4,
-  '&:hover': { bgcolor: 'rgba(79,172,181,0.3)' },
-};
+export const Title = styled(Typography)({
+  fontWeight: 700,
+  color: "#333",
+});
 
-export const blurBoxSx: SxProps<Theme> = {
-  position: 'absolute',
+export const Subtitle = styled(Typography)({
+  color: "#666",
+});
+
+// Optional blur box effect inside ImageBox
+export const BlurBox = styled(Box)({
+  position: "absolute",
   bottom: 24,
   right: 24,
-  width: '40%',
-  height: '50%',
-  bgcolor: 'rgba(79,172,181,0.3)',
-  borderRadius: 3,
-  filter: 'blur(60px)',
-  pointerEvents: 'none',
-};
+  width: "40%",
+  height: "50%",
+  backgroundColor: "rgba(79,172,181,0.3)",
+  borderRadius: 12,
+  filter: "blur(60px)",
+  pointerEvents: "none",
+});
