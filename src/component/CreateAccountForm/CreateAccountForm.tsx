@@ -1,15 +1,8 @@
 import React, { useState, type ChangeEvent, type FormEvent } from 'react';
-import { TextField, Button, Typography, Box } from '@mui/material';
+import { Box, TextField, Typography, Button } from '@mui/material';
 
-interface AccountFormData {
-  name: string;
-  address: string;
-  phone: string;
-  bankAccount?: string;
-}
-
-function CreateAccountForm() {
-  const [formData, setFormData] = useState<AccountFormData>({
+const CreateAccountForm = () => {
+  const [formData, setFormData] = useState({
     name: '',
     address: '',
     phone: '',
@@ -18,7 +11,7 @@ function CreateAccountForm() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
@@ -26,8 +19,8 @@ function CreateAccountForm() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log('Account Created:', formData);
+    // Add your submit logic here
   };
 
   return (
@@ -37,46 +30,46 @@ function CreateAccountForm() {
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
-          fullWidth
-          required
-          margin="normal"
           label="Name"
           name="name"
           value={formData.name}
           onChange={handleChange}
-        />
-        <TextField
           fullWidth
           required
           margin="normal"
+        />
+        <TextField
           label="Address"
           name="address"
           value={formData.address}
           onChange={handleChange}
-        />
-        <TextField
           fullWidth
           required
           margin="normal"
+        />
+        <TextField
           label="Phone Number"
           name="phone"
           value={formData.phone}
           onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
         />
         <TextField
-          fullWidth
-          margin="normal"
           label="Bank Account Number (optional)"
           name="bankAccount"
           value={formData.bankAccount}
           onChange={handleChange}
+          fullWidth
+          margin="normal"
         />
-        <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+        <Button variant="contained" type="submit" sx={{ mt: 2 }}>
           Create Account
         </Button>
       </form>
     </Box>
   );
-}
+};
 
 export default CreateAccountForm;
