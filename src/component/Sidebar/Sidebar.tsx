@@ -19,7 +19,7 @@ interface SidebarProps {
   setSelected: (value: string) => void;
 }
 
-const Sidebar = ({ selected, setSelected }: SidebarProps) => {
+const Sidebar = ({ setSelected }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 

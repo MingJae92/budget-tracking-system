@@ -1,5 +1,6 @@
 // src/pages/CreatePaymentPage.tsx
 import { Box, Typography, TextField, Button, Stack } from '@mui/material';
+import CreatePaymentForm from '../../component/CreatePaymentForm/CreatePaymentForm';
 
 const CreatePaymentPage = () => {
   return (
@@ -11,6 +12,7 @@ const CreatePaymentPage = () => {
         <TextField label="Payee" variant="outlined" fullWidth />
         <TextField label="Amount" variant="outlined" type="number" fullWidth />
         <TextField label="Date" variant="outlined" type="date" InputLabelProps={{ shrink: true }} fullWidth />
+        <CreatePaymentForm/>
         <Button variant="contained" color="primary">
           Submit Payment
         </Button>
