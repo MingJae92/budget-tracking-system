@@ -17,21 +17,20 @@ import { useState } from "react";
 
 const accountsData = [
   {
-    name: 'Jane Doe',
-    address: '123 Main St, London',
-    phone: '01234567890',
-    bankAccount: '12345678',
-    updated: 'Jul 26',
+    name: "Jane Doe",
+    address: "123 Main St, London",
+    phone: "01234567890",
+    bankAccount: "12345678",
+    updated: "Jul 26",
   },
   {
-    name: 'John Smith',
-    address: '456 Queen’s Ave, Manchester',
-    phone: '07987654321',
-    bankAccount: '',
-    updated: 'Jul 25',
+    name: "John Smith",
+    address: "456 Queen’s Ave, Manchester",
+    phone: "07987654321",
+    bankAccount: "",
+    updated: "Jul 25",
   },
 ];
-
 
 const Dashboard = () => {
   const [selected, setSelected] = useState("Accounts");
@@ -55,9 +54,7 @@ const Dashboard = () => {
             <Typography variant="h4" gutterBottom>
               Your Accounts
             </Typography>
-            <Button variant="contained" sx={{ mb: 2 }}>
-              + Create New Account
-            </Button>
+
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
