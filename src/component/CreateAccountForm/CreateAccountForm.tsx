@@ -25,7 +25,7 @@ const CreateAccountForm = () => {
 
   return (
     <Box sx={{ maxWidth: 600, mx: 'auto', p: 3 }}>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" align="center" gutterBottom>
         Create New Account
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -64,9 +64,11 @@ const CreateAccountForm = () => {
           fullWidth
           margin="normal"
         />
-        <Button variant="contained" type="submit" sx={{ mt: 2 }}>
-          Create Account
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button variant="contained" type="submit">
+            Create Account
+          </Button>
+        </Box>
       </form>
     </Box>
   );

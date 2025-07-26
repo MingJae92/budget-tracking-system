@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Typography,
   type SelectChangeEvent,
 } from '@mui/material';
 
@@ -53,14 +54,12 @@ const CreatePaymentForm = () => {
     }
 
     console.log('Submitted payment:', formData);
-    // Proceed with form submission logic here
     setSubmitAfterConfirm(false); // reset
   };
 
   const confirmApproval = () => {
     setShowConfirm(false);
     setSubmitAfterConfirm(true);
-    // Submit the form again now that it's confirmed
     setTimeout(() => {
       const fakeSubmitEvent = new Event('submit', { bubbles: true });
       document.querySelector('form')?.dispatchEvent(fakeSubmitEvent);
@@ -72,8 +71,12 @@ const CreatePaymentForm = () => {
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{ maxWidth: 400, mx: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}
+        sx={{ maxWidth: 500, mx: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}
       >
+        <Typography variant="h5" align="center" gutterBottom>
+          Create Payment
+        </Typography>
+
         <FormControl fullWidth>
           <InputLabel id="account-label">Account</InputLabel>
           <Select

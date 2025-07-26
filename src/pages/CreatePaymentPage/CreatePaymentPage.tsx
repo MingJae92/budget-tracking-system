@@ -5,9 +5,7 @@ import CreatePaymentForm from "../../component/CreatePaymentForm/CreatePaymentFo
 const CreatePaymentPage = () => {
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
-        Create New Payment
-      </Typography>
+      
       <CreatePaymentForm />
     </Box>
   );
