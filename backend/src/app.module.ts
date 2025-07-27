@@ -1,18 +1,17 @@
+// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AccountsModule } from './accounts/accounts.module'; // ✅ Import your feature module
+import { AccountsModule } from './accounts/accounts.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: 'config/.env',
+      envFilePath: 'config/.env', // Adjust based on your setup
     }),
-    AccountsModule, // ✅ Properly added inside the same imports array
+    AccountsModule,
+    PaymentsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
