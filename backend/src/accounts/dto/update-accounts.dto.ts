@@ -1,0 +1,20 @@
+// src/accounts/dto/update-account.dto.ts
+import { IsString, IsOptional, IsPhoneNumber } from 'class-validator';
+
+export class UpdateAccountsDto {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @IsOptional()
+  @IsPhoneNumber('GB')
+  phoneNumber?: string;
+
+  @IsOptional()
+  @IsString()
+  bankAccountNumber?: string;
+}

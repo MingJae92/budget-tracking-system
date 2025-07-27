@@ -1,14 +1,15 @@
-import { IsString, IsPhoneNumber, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsPhoneNumber, IsOptional } from "class-validator";
 
 export class CreateAccountsDto {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsString()
+  @IsNotEmpty()
   address: string;
 
-  // Change null to undefined so it’s type-safe
-  @IsPhoneNumber(undefined)
+  @IsPhoneNumber('GB')
   phoneNumber: string;
 
   @IsOptional()
