@@ -23,4 +23,14 @@ export class PaymentsService {
     if (error) throw new Error(error.message);
     return data;
   }
+
+  async create(paymentData: any) {
+    const { data, error } = await this.supabase
+      .from('payments')
+      .insert(paymentData)
+      .select(); // returns inserted row(s)
+      
+    if (error) throw new Error(error.message);
+    return data;
+  }
 }

@@ -8,7 +8,7 @@ import { PaymentsModule } from './payments/payments.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: 'config/.env', // Adjust based on your setup
+      envFilePath: 'config/.env', 
     }),
     AccountsModule,
     PaymentsModule,
