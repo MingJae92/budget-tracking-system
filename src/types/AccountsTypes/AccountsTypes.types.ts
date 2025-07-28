@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export default interface Account {
+export default interface Accounts {
   bank_account: string;
   last_updated: ReactNode;
   id: number;
