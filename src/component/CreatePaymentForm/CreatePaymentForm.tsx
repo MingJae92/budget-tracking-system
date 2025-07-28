@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   TextField,
   MenuItem,
@@ -13,16 +14,18 @@ import {
   DialogContentText,
   DialogActions,
   Typography,
+  Snackbar,
+  Alert,
   type SelectChangeEvent,
 } from '@mui/material';
 
 const CreatePaymentForm = () => {
   const [formData, setFormData] = useState({
-    account: '',
+    user_id: '', // if this is a number, better default 0 or '' and parse later
     amount: '',
-    recipientName: '',
-    recipientBank: '',
-    recipientAccount: '',
+    recipient_name: '',
+    recipient_bank_name: '',
+    recipient_account_number: '',
     notes: '',
     status: 'Pending',
   });
@@ -30,22 +33,30 @@ const CreatePaymentForm = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [submitAfterConfirm, setSubmitAfterConfirm] = useState(false);
 
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success' as 'success' | 'error',
+  });
+
+  // Controlled inputs update state
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Controlled select update
   const handleSelectChange = (e: SelectChangeEvent) => {
     const { name, value } = e.target;
 
     if (name === 'status' && value === 'Approved') {
-      setShowConfirm(true); // Show modal
+      setShowConfirm(true);
     }
 
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.status === 'Approved' && !submitAfterConfirm) {
@@ -53,17 +64,44 @@ const CreatePaymentForm = () => {
       return;
     }
 
-    console.log('Submitted payment:', formData);
-    setSubmitAfterConfirm(false); // reset
+    await submitToServer();
+    setSubmitAfterConfirm(false);
   };
 
-  const confirmApproval = () => {
+  const confirmApproval = async () => {
     setShowConfirm(false);
     setSubmitAfterConfirm(true);
-    setTimeout(() => {
-      const fakeSubmitEvent = new Event('submit', { bubbles: true });
-      document.querySelector('form')?.dispatchEvent(fakeSubmitEvent);
-    }, 0);
+    await submitToServer();
+    setSubmitAfterConfirm(false);
+  };
+
+  // Convert amount to number & user_id to number before submit
+  const submitToServer = async () => {
+    try {
+      // Validate and transform data
+      const payload = {
+        ...formData,
+        amount: Number(formData.amount),
+        user_id: Number(formData.user_id),
+      };
+
+      // Optional: you can add client-side validation here to check NaN
+
+      const response = await axios.post('http://localhost:3000/payments', payload);
+      setSnackbar({
+        open: true,
+        message: '✅ Payment successfully submitted!',
+        severity: 'success',
+      });
+      console.log('Submitted:', response.data);
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: '❌ Failed to submit payment. Please try again.',
+        severity: 'error',
+      });
+      console.error('Submit error:', error);
+    }
   };
 
   return (
@@ -78,46 +116,53 @@ const CreatePaymentForm = () => {
         </Typography>
 
         <FormControl fullWidth>
-          <InputLabel id="account-label">Account</InputLabel>
+          <InputLabel id="user_id-label">User ID</InputLabel>
           <Select
-            labelId="account-label"
-            name="account"
-            value={formData.account}
+            labelId="user_id-label"
+            name="user_id" // must match state key
+            value={formData.user_id}
             onChange={handleSelectChange}
-            label="Account"
+            label="User ID"
           >
-            <MenuItem value="account1">Account 1</MenuItem>
-            <MenuItem value="account2">Account 2</MenuItem>
+            <MenuItem value={1}>User 1</MenuItem>
+            <MenuItem value={2}>User 2</MenuItem>
+            {/* Add actual user options here */}
           </Select>
         </FormControl>
 
         <TextField
           label="Amount"
-          name="amount"
+          name="amount" // matches state key
+          type="number" // enforce numeric input
           value={formData.amount}
           onChange={handleInputChange}
           fullWidth
+          inputProps={{ min: 0, step: 0.01 }}
+          required
         />
         <TextField
           label="Recipient's Name"
-          name="recipientName"
-          value={formData.recipientName}
+          name="recipient_name" // match key!
+          value={formData.recipient_name}
           onChange={handleInputChange}
           fullWidth
+          required
         />
         <TextField
           label="Recipient's Bank Name"
-          name="recipientBank"
-          value={formData.recipientBank}
+          name="recipient_bank_name" // match key
+          value={formData.recipient_bank_name}
           onChange={handleInputChange}
           fullWidth
+          required
         />
         <TextField
           label="Recipient's Account Number"
-          name="recipientAccount"
-          value={formData.recipientAccount}
+          name="recipient_account_number" // match key
+          value={formData.recipient_account_number}
           onChange={handleInputChange}
           fullWidth
+          required
         />
         <TextField
           label="Notes (optional)"
@@ -125,6 +170,8 @@ const CreatePaymentForm = () => {
           value={formData.notes}
           onChange={handleInputChange}
           fullWidth
+          multiline
+          rows={2}
         />
 
         <FormControl fullWidth>
@@ -135,6 +182,7 @@ const CreatePaymentForm = () => {
             value={formData.status}
             onChange={handleSelectChange}
             label="Status"
+            required
           >
             <MenuItem value="Pending">Pending</MenuItem>
             <MenuItem value="Approved">Approved</MenuItem>
@@ -146,6 +194,7 @@ const CreatePaymentForm = () => {
         </Button>
       </Box>
 
+      {/* Confirm Dialog */}
       <Dialog open={showConfirm} onClose={() => setShowConfirm(false)}>
         <DialogTitle>Confirm Approval</DialogTitle>
         <DialogContent>
@@ -162,6 +211,23 @@ const CreatePaymentForm = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Snackbar Alert */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
