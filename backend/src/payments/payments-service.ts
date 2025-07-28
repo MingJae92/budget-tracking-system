@@ -1,4 +1,3 @@
-// src/payments/payments.service.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
@@ -17,24 +16,26 @@ export class PaymentsService {
       throw new Error('Missing Supabase credentials.');
     }
 
-    // Create a typed client using your Database interface
     this.supabase = createClient<Database>(url, key);
   }
 
+  // Get all payments ordered by timestamp descending (newest first)
   async findAll(): Promise<PaymentDataTypes[]> {
     const { data, error } = await this.supabase
-      .from('payments')  // no need to provide generics here, already typed by client
-      .select('*');
+      .from('payments')
+      .select('*')
+      .order('timestamp', { ascending: false }); // <-- sort by newest
 
     if (error) throw new Error(error.message);
     return data ?? [];
   }
 
+  // Insert new payment and return the inserted row
   async create(paymentData: PaymentDataTypes): Promise<PaymentDataTypes[]> {
     const { data, error } = await this.supabase
       .from('payments')
-      .insert([paymentData])  // insert expects array of objects
-      .select();
+      .insert([paymentData])
+      .select(); // select returns inserted rows
 
     if (error) throw new Error(error.message);
     return data ?? [];
