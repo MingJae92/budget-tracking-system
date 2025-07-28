@@ -13,28 +13,35 @@ import {
 } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../../component/Sidebar/Sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAccounts } from "../../hooks/UseAccounts/useAccounts";
 
-const accountsData = [
-  {
-    name: "Jane Doe",
-    address: "123 Main St, London",
-    phone: "01234567890",
-    bankAccount: "12345678",
-    updated: "Jul 26",
-  },
-  {
-    name: "John Smith",
-    address: "456 Queen’s Ave, Manchester",
-    phone: "07987654321",
-    bankAccount: "",
-    updated: "Jul 25",
-  },
-];
+// const accountsData = [
+//   {
+//     name: "Jane Doe",
+//     address: "123 Main St, London",
+//     phone: "01234567890",
+//     bankAccount: "12345678",
+//     updated: "Jul 26",
+//   },
+//   {
+//     name: "John Smith",
+//     address: "456 Queen’s Ave, Manchester",
+//     phone: "07987654321",
+//     bankAccount: "",
+//     updated: "Jul 25",
+//   },
+// ];
 
 const Dashboard = () => {
   const [selected, setSelected] = useState("Accounts");
+  const{error, loading, accounts}=useAccounts()
+
   const location = useLocation();
+
+  useEffect(()=>{
+    
+  },[])
 
   return (
     <Box sx={{ display: "flex", height: "100vh", width: "100vw" }}>
@@ -78,13 +85,13 @@ const Dashboard = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {accountsData.map((account, idx) => (
+                  {accounts.map((account, idx) => (
                     <TableRow key={idx}>
                       <TableCell>{account.name}</TableCell>
                       <TableCell>{account.address}</TableCell>
-                      <TableCell>{account.phone}</TableCell>
-                      <TableCell>{account.bankAccount || "N/A"}</TableCell>
-                      <TableCell>{account.updated}</TableCell>{" "}
+                      <TableCell>{account.phone_number}</TableCell>
+                      <TableCell>{account.bank_account || "N/A"}</TableCell>
+                      <TableCell>{account.last_updated}</TableCell>{" "}
                       {/* Updated here */}
                     </TableRow>
                   ))}
