@@ -17,7 +17,7 @@ import {
   DialogActions,
   CircularProgress,
   Alert,
-  Container,
+  TablePagination,
 } from "@mui/material";
 import { useState } from "react";
 import { useAccounts } from "../../hooks/UseAccounts/useAccounts";
@@ -39,9 +39,13 @@ function ViewAccounts() {
     last_updated: "",
   });
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const handleEditClick = (index: number) => {
-    const account = accounts[index];
-    setEditIndex(index);
+    const actualIndex = page * rowsPerPage + index;
+    const account = accounts[actualIndex];
+    setEditIndex(actualIndex);
     setFormData(account);
     setOpen(true);
   };
@@ -58,6 +62,17 @@ function ViewAccounts() {
     setOpen(false);
   };
 
+  const handleChangePage = (_: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <Box>
       <Typography variant="h5" gutterBottom>
@@ -67,7 +82,6 @@ function ViewAccounts() {
         View and edit all your linked accounts here.
       </Typography>
 
-      {/* 🔄 Loading State */}
       {loading && (
         <Box sx={{ textAlign: "center", mt: 4 }}>
           <CircularProgress />
@@ -75,46 +89,57 @@ function ViewAccounts() {
         </Box>
       )}
 
-      {/* ❌ Error State */}
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
-          {"Failed to load accounts."}
+          Failed to load accounts.
         </Alert>
       )}
 
-      {/* ✅ Table UI */}
       {!loading && !error && (
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell><strong>Name</strong></TableCell>
-                <TableCell><strong>Address</strong></TableCell>
-                <TableCell><strong>Phone</strong></TableCell>
-                <TableCell><strong>Bank Account #</strong></TableCell>
-                <TableCell><strong>Last Updated</strong></TableCell>
-                <TableCell><strong>Actions</strong></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {accounts.map((account, idx) => (
-                <TableRow key={account.id || idx}>
-                  <TableCell>{account.name}</TableCell>
-                  <TableCell>{account.address}</TableCell>
-                  <TableCell>{account.phone_number}</TableCell>
-                  <TableCell>{account.bank_account_number || "—"}</TableCell>
-                  <TableCell>{account.last_updated}</TableCell>
-                  <TableCell>
-                    <Button onClick={() => handleEditClick(idx)}>✏️ Edit</Button>
-                  </TableCell>
+        <>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><strong>Name</strong></TableCell>
+                  <TableCell><strong>Address</strong></TableCell>
+                  <TableCell><strong>Phone</strong></TableCell>
+                  <TableCell><strong>Bank Account #</strong></TableCell>
+                  <TableCell><strong>Last Updated</strong></TableCell>
+                  <TableCell><strong>Actions</strong></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {accounts
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((account, idx) => (
+                    <TableRow key={account.id || idx}>
+                      <TableCell>{account.name}</TableCell>
+                      <TableCell>{account.address}</TableCell>
+                      <TableCell>{account.phone_number}</TableCell>
+                      <TableCell>{account.bank_account_number || "—"}</TableCell>
+                      <TableCell>{account.last_updated}</TableCell>
+                      <TableCell>
+                        <Button onClick={() => handleEditClick(idx)}>✏️ Edit</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <TablePagination
+            component="div"
+            count={accounts.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
+        </>
       )}
 
-      {/* ✏️ Edit Modal */}
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
         <DialogTitle>Edit Account</DialogTitle>
         <DialogContent>

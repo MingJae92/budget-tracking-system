@@ -11,6 +11,7 @@ import {
   Paper,
   CircularProgress,
   Alert,
+  TablePagination,
 } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../../component/Sidebar/Sidebar";
@@ -19,9 +20,29 @@ import { useAccounts } from "../../hooks/UseAccounts/useAccounts";
 
 const Dashboard = () => {
   const [selected, setSelected] = useState("Accounts");
+  
+  // Pagination state
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  
   const { error, loading, accounts } = useAccounts();
-
   const location = useLocation();
+
+  // Handle page change
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  // Get paginated data
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const paginatedAccounts = accounts.slice(startIndex, endIndex);
 
   return (
     <Box sx={{ display: "flex", height: "100vh", width: "100vw" }}>
@@ -65,42 +86,52 @@ const Dashboard = () => {
             )}
 
             {!loading && !error && accounts.length > 0 && (
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        <strong>Name</strong>
-                      </TableCell>
-                      <TableCell>
-                        <strong>Address</strong>
-                      </TableCell>
-                      <TableCell>
-                        <strong>Phone Number</strong>
-                      </TableCell>
-                      <TableCell>
-                        <strong>Bank Account #</strong>
-                      </TableCell>
-                      <TableCell>
-                        <strong>Last Updated</strong>
-                      </TableCell>{" "}
-                      {/* Updated here */}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {accounts.map((account, idx) => (
-                      <TableRow key={idx}>
-                        <TableCell>{account.name}</TableCell>
-                        <TableCell>{account.address}</TableCell>
-                        <TableCell>{account.phone_number}</TableCell>
-                        <TableCell>{account.bank_account || "N/A"}</TableCell>
-                        <TableCell>{account.last_updated}</TableCell>{" "}
-                        {/* Updated here */}
+              <Paper>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>
+                          <strong>Name</strong>
+                        </TableCell>
+                        <TableCell>
+                          <strong>Address</strong>
+                        </TableCell>
+                        <TableCell>
+                          <strong>Phone Number</strong>
+                        </TableCell>
+                        <TableCell>
+                          <strong>Bank Account #</strong>
+                        </TableCell>
+                        <TableCell>
+                          <strong>Last Updated</strong>
+                        </TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                      {paginatedAccounts.map((account, idx) => (
+                        <TableRow key={startIndex + idx}>
+                          <TableCell>{account.name}</TableCell>
+                          <TableCell>{account.address}</TableCell>
+                          <TableCell>{account.phone_number}</TableCell>
+                          <TableCell>{account.bank_account || "N/A"}</TableCell>
+                          <TableCell>{account.last_updated}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, 50]}
+                  component="div"
+                  count={accounts.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </Paper>
             )}
           </>
         ) : (
