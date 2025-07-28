@@ -21,7 +21,7 @@ import {
 
 const CreatePaymentForm = () => {
   const [formData, setFormData] = useState({
-    user_id: '', // if this is a number, better default 0 or '' and parse later
+    user_id: '',
     amount: '',
     recipient_name: '',
     recipient_bank_name: '',
@@ -31,7 +31,7 @@ const CreatePaymentForm = () => {
   });
 
   const [showConfirm, setShowConfirm] = useState(false);
-  const [submitAfterConfirm, setSubmitAfterConfirm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -39,13 +39,11 @@ const CreatePaymentForm = () => {
     severity: 'success' as 'success' | 'error',
   });
 
-  // Controlled inputs update state
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Controlled select update
   const handleSelectChange = (e: SelectChangeEvent) => {
     const { name, value } = e.target;
 
@@ -59,33 +57,35 @@ const CreatePaymentForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.status === 'Approved' && !submitAfterConfirm) {
+    // Confirm before submission if status is Approved
+    if (formData.status === 'Approved') {
       setShowConfirm(true);
       return;
     }
 
     await submitToServer();
-    setSubmitAfterConfirm(false);
   };
 
   const confirmApproval = async () => {
     setShowConfirm(false);
-    setSubmitAfterConfirm(true);
     await submitToServer();
-    setSubmitAfterConfirm(false);
   };
 
-  // Convert amount to number & user_id to number before submit
   const submitToServer = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     try {
-      // Validate and transform data
       const payload = {
         ...formData,
         amount: Number(formData.amount),
         user_id: Number(formData.user_id),
       };
 
-      // Optional: you can add client-side validation here to check NaN
+      if (isNaN(payload.amount) || isNaN(payload.user_id)) {
+        throw new Error('Amount and user ID must be valid numbers.');
+      }
 
       const response = await axios.post('http://localhost:3000/payments', payload);
       setSnackbar({
@@ -93,7 +93,19 @@ const CreatePaymentForm = () => {
         message: '✅ Payment successfully submitted!',
         severity: 'success',
       });
+
       console.log('Submitted:', response.data);
+
+      // Optionally clear form
+      setFormData({
+        user_id: '',
+        amount: '',
+        recipient_name: '',
+        recipient_bank_name: '',
+        recipient_account_number: '',
+        notes: '',
+        status: 'Pending',
+      });
     } catch (error) {
       setSnackbar({
         open: true,
@@ -101,6 +113,8 @@ const CreatePaymentForm = () => {
         severity: 'error',
       });
       console.error('Submit error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -115,55 +129,46 @@ const CreatePaymentForm = () => {
           Create Payment
         </Typography>
 
-        <FormControl fullWidth>
-          <InputLabel id="user_id-label">User ID</InputLabel>
-          <Select
-            labelId="user_id-label"
-            name="user_id" // must match state key
-            value={formData.user_id}
-            onChange={handleSelectChange}
-            label="User ID"
-          >
-            <MenuItem value={1}>User 1</MenuItem>
-            <MenuItem value={2}>User 2</MenuItem>
-            {/* Add actual user options here */}
-          </Select>
-        </FormControl>
+        
 
         <TextField
           label="Amount"
-          name="amount" // matches state key
-          type="number" // enforce numeric input
+          name="amount"
+          type="number"
           value={formData.amount}
           onChange={handleInputChange}
           fullWidth
           inputProps={{ min: 0, step: 0.01 }}
           required
         />
+
         <TextField
           label="Recipient's Name"
-          name="recipient_name" // match key!
+          name="recipient_name"
           value={formData.recipient_name}
           onChange={handleInputChange}
           fullWidth
           required
         />
+
         <TextField
           label="Recipient's Bank Name"
-          name="recipient_bank_name" // match key
+          name="recipient_bank_name"
           value={formData.recipient_bank_name}
           onChange={handleInputChange}
           fullWidth
           required
         />
+
         <TextField
           label="Recipient's Account Number"
-          name="recipient_account_number" // match key
+          name="recipient_account_number"
           value={formData.recipient_account_number}
           onChange={handleInputChange}
           fullWidth
           required
         />
+
         <TextField
           label="Notes (optional)"
           name="notes"
@@ -189,8 +194,8 @@ const CreatePaymentForm = () => {
           </Select>
         </FormControl>
 
-        <Button variant="contained" type="submit">
-          Submit Payment
+        <Button variant="contained" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Submit Payment'}
         </Button>
       </Box>
 

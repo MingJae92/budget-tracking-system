@@ -65,7 +65,7 @@ const ViewPayments = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <strong>Account</strong>
+                    <strong>AccountID</strong>
                   </TableCell>
                   <TableCell>
                     <strong>Amount (£)</strong>
@@ -91,7 +91,7 @@ const ViewPayments = () => {
                 {paginatedPayments.length > 0 ? (
                   paginatedPayments.map((payment: any, index: number) => (
                     <TableRow key={startIndex + index}>
-                      <TableCell>{payment.user_id}</TableCell>
+                      <TableCell>{payment.id}</TableCell>
                       <TableCell>{payment.amount.toFixed(2)}</TableCell>
                       <TableCell>{payment.recipient_name}</TableCell>
                       <TableCell>{payment.recipient_bank_name}</TableCell>
