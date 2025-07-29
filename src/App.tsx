@@ -11,7 +11,8 @@ const App = () => {
   return (
     <Routes>
       {/* Protected routes under /dashboard */}
-      <Route path="/" element={<Dashboard />}>
+      <Route path="/" element={<Dashboard/>}>
+       
         <Route path="accounts" element={<Accounts />} />
         <Route path="payments" element={<Payments />} />
         <Route path="create-account" element={<CreateAccount />} />

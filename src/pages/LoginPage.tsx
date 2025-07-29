@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode"; // fixed import here
+
 import { Wrapper, Container } from "../styles/LayoutStyles/LayoutSyles.styles";
 import {
   LeftSide,
@@ -9,27 +13,26 @@ import {
   Heading,
   Subheading,
 } from "../styles/TypographyStyles/TypographyStyles.styles";
-import {
-  StyledTextField,
-  StyledButton,
-  SocialButton,
-} from "../styles/FormStyles/FormStyles.styles";
-import { TextField, InputAdornment, IconButton } from "@mui/material";
-import { Visibility, VisibilityOff, Google } from "@mui/icons-material";
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
 
-  const togglePasswordVisibility = () => setShowPassword((v) => !v);
+  const handleLoginSuccess = (credentialResponse: any) => {
+    if (credentialResponse?.credential) {
+      const userData = jwtDecode(credentialResponse.credential);
+      console.log("Decoded Google User:", userData);
+      console.log("User successfully logged in!"); // Added success log
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      // Store user data in localStorage or Context here if needed
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      // Navigate to dashboard using useNavigate()
+      navigate("/dashboard");
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Login data:", formData);
+  const handleLoginFailure = () => {
+    console.log("Google login failed.");
   };
 
   return (
@@ -43,68 +46,21 @@ const LoginPage = () => {
               Welcome Back
             </h1>
             <p style={{ maxWidth: 300, fontSize: "1rem", lineHeight: 1.5 }}>
-              Sign in to continue booking your dream hotel stays.
+              Sign in with your Google account to continue.
             </p>
           </LeftContent>
         </LeftSide>
 
         <RightSide>
-          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-            <Heading>Sign In</Heading>
-            <Subheading>Please enter your credentials below</Subheading>
+          <Heading>Sign In</Heading>
+          <Subheading>Use your Google Account</Subheading>
 
-            <StyledTextField>
-              <TextField
-                fullWidth
-                variant="standard"
-                label="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                multiline
-                minRows={3}
-                InputProps={{ disableUnderline: true }}
-              />
-            </StyledTextField>
-
-            <StyledTextField>
-              <TextField
-                fullWidth
-                variant="standard"
-                label="Password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                value={formData.password}
-                onChange={handleChange}
-                multiline
-                minRows={3}
-                InputProps={{
-                  disableUnderline: true,
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={togglePasswordVisibility}
-                        edge="end"
-                        aria-label={
-                          showPassword ? "Hide password" : "Show password"
-                        }
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </StyledTextField>
-
-            <StyledButton type="submit" fullWidth>
-              Login
-            </StyledButton>
-
-            <SocialButton fullWidth startIcon={<Google />}>
-              Continue with Google
-            </SocialButton>
-          </form>
+          <div style={{ marginTop: "2rem" }}>
+            <GoogleLogin
+              onSuccess={handleLoginSuccess}
+              onError={handleLoginFailure}
+            />
+          </div>
         </RightSide>
       </Container>
     </Wrapper>
