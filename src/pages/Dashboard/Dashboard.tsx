@@ -57,7 +57,7 @@ const Dashboard = () => {
           boxSizing: "border-box",
         }}
       >
-        {location.pathname === "/" ? (
+       {location.pathname === "/" || location.pathname === "/dashboard" ? (
           <>
             <Typography variant="h4" gutterBottom>
               Your Accounts
