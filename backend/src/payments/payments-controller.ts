@@ -1,4 +1,3 @@
-// src/payments/payments.controller.ts
 import { Controller, Get, Post, Body, Put, Param } from '@nestjs/common';
 import { PaymentsService } from './payments-service';
 
@@ -16,7 +15,6 @@ export class PaymentsController {
     return this.paymentsService.create(paymentData);
   }
 
-  // ✅ PUT method to update payment status
   @Put(':id/status')
   updateStatus(@Param('id') id: string, @Body('status') status: string) {
     return this.paymentsService.updateStatus(id, status);

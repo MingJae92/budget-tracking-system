@@ -21,27 +21,34 @@ export class AccountsService {
   }
 
   async findAll() {
-    const { data, error } = await this.supabase.from('accounts').select('*');
-    if (error) throw new Error(error.message);
-    return data;
-  }
+  const { data, error } = await this.supabase
+    .from('accounts')
+    .select('*')
+    .order('last_updated', { ascending: false }); // ✅ Most recently updated first
+
+  if (error) throw new Error(error.message);
+  return data;
+}
+
 
   async createAccount(dto: CreateAccountsDto) {
-    const { data, error } = await this.supabase
-      .from('accounts')
-      .insert([
-        {
-          name: dto.name,
-          address: dto.address,
-          phone_number: dto.phoneNumber,
-          bank_account_number: dto.bankAccountNumber || null,
-        },
-      ])
-      .select();
+  const { data, error } = await this.supabase
+    .from('accounts')
+    .insert([
+      {
+        name: dto.name,
+        address: dto.address,
+        phone_number: dto.phone_number,
+        bank_account_number: dto.bank_account_number || null,
+        last_updated: new Date().toISOString(),  // <-- Add this line
+      },
+    ])
+    .select();
 
-    if (error) throw new Error(error.message);
-    return data;
-  }
+  if (error) throw new Error(error.message);
+  return data;
+}
+
 
   async updateAccount(id: string, dto: UpdateAccountsDto) {
     const { data, error } = await this.supabase
@@ -49,8 +56,8 @@ export class AccountsService {
       .update({
         name: dto.name,
         address: dto.address,
-        phone_number: dto.phoneNumber,
-        bank_account_number: dto.bankAccountNumber,
+        phone_number: dto.phone_number,
+        bank_account_number: dto.bank_account_number,
       })
       .eq('id', id)
       .select()

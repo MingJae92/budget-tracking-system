@@ -20,7 +20,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import { useState } from "react";
-import axios from "axios"; // <-- Added
+import axios from "axios";
 import { useAccounts } from "../../hooks/UseAccounts/useAccounts";
 import type Accounts from "../../types/AccountsTypes/AccountsTypes.types";
 
@@ -29,8 +29,8 @@ function ViewAccounts() {
 
   const [open, setOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // <-- Added
-  const [snackbarMessage, setSnackbarMessage] = useState(""); // <-- Added
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const [formData, setFormData] = useState<Accounts>({
     id: 0,
@@ -63,7 +63,10 @@ function ViewAccounts() {
 
   const handleSave = async () => {
     try {
-      await axios.patch(`http://localhost:3000/accounts/${formData.id}`, formData); // adjust as needed
+      await axios.patch(
+        `http://localhost:3000/accounts/${formData.id}`,
+        formData
+      ); // adjust as needed
       setSnackbarMessage("Account updated successfully!");
       setSnackbarOpen(true);
       setOpen(false);
@@ -114,12 +117,24 @@ function ViewAccounts() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell><strong>Name</strong></TableCell>
-                  <TableCell><strong>Address</strong></TableCell>
-                  <TableCell><strong>Phone</strong></TableCell>
-                  <TableCell><strong>Bank Account #</strong></TableCell>
-                  <TableCell><strong>Last Updated</strong></TableCell>
-                  <TableCell><strong>Actions</strong></TableCell>
+                  <TableCell>
+                    <strong>Name</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Address</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Phone</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Bank Account #</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Last Updated</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Actions</strong>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -130,10 +145,14 @@ function ViewAccounts() {
                       <TableCell>{account.name}</TableCell>
                       <TableCell>{account.address}</TableCell>
                       <TableCell>{account.phone_number}</TableCell>
-                      <TableCell>{account.bank_account_number || "—"}</TableCell>
+                      <TableCell>
+                        {account.bank_account_number || "—"}
+                      </TableCell>
                       <TableCell>{account.last_updated}</TableCell>
                       <TableCell>
-                        <Button onClick={() => handleEditClick(idx)}>✏️ Edit</Button>
+                        <Button onClick={() => handleEditClick(idx)}>
+                          ✏️ Edit
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -197,7 +216,6 @@ function ViewAccounts() {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}

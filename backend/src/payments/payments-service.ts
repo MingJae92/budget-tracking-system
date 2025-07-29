@@ -1,4 +1,3 @@
-// src/payments/payments.service.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
@@ -41,14 +40,16 @@ export class PaymentsService {
     return data ?? [];
   }
 
-  // ✅ NEW: Update payment status
-  async updateStatus(id: string, status: string): Promise<PaymentDataTypes | null> {
+  async updateStatus(
+    id: string,
+    status: string,
+  ): Promise<PaymentDataTypes | null> {
     const { data, error } = await this.supabase
       .from('payments')
       .update({ status })
       .eq('id', id)
       .select()
-      .single(); // Expect a single result
+      .single();
 
     if (error) throw new Error(error.message);
     return data;

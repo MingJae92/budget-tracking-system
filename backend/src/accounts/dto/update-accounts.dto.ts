@@ -12,9 +12,9 @@ export class UpdateAccountsDto {
 
   @IsOptional()
   @IsPhoneNumber('GB')
-  phoneNumber?: string;
+  phone_number?: string;
 
   @IsOptional()
   @IsString()
-  bankAccountNumber?: string;
+  bank_account_number?: string;
 }

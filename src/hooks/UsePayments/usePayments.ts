@@ -1,4 +1,3 @@
-// src/hooks/usePayments.ts
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -15,7 +14,7 @@ export const usePayments = () => {
         const response = await axios.get<Payment[]>(
           "http://localhost:3000/payments"
         );
-        // console.log(response.data)
+
         setPayments(response.data);
       } catch (error: any) {
         setError(error.message || "An error occurred while fetching payments.");

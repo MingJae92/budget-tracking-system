@@ -25,18 +25,16 @@ import { usePayments } from "../../hooks/UsePayments/usePayments";
 const ViewPayments = () => {
   const { error, loading, payments } = usePayments();
 
-  // Pagination state
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  // Modal state
   const [openModal, setOpenModal] = useState(false);
-  const [selectedPaymentIndex, setSelectedPaymentIndex] = useState<number | null>(null);
+  const [selectedPaymentIndex, setSelectedPaymentIndex] = useState<
+    number | null
+  >(null);
 
-  // Local payments copy for UI updates
   const [localPayments, setLocalPayments] = useState<any[]>([]);
 
-  // Snackbar for feedback
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -50,7 +48,9 @@ const ViewPayments = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -78,9 +78,12 @@ const ViewPayments = () => {
     const paymentId = paymentToUpdate.id;
 
     try {
-      const { data: updatedPayment } = await axios.put(`http://localhost:3000/payments/${paymentId}/status`, {
-        status: "Approved",
-      });
+      const { data: updatedPayment } = await axios.put(
+        `http://localhost:3000/payments/${paymentId}/status`,
+        {
+          status: "Approved",
+        }
+      );
 
       const updatedPayments = [...localPayments];
       updatedPayments[selectedPaymentIndex] = updatedPayment;
@@ -98,7 +101,10 @@ const ViewPayments = () => {
     }
   };
 
-  const paginatedPayments = localPayments.slice(startIndex, startIndex + rowsPerPage);
+  const paginatedPayments = localPayments.slice(
+    startIndex,
+    startIndex + rowsPerPage
+  );
 
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", p: 3 }}>
@@ -124,13 +130,27 @@ const ViewPayments = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell><strong>AccountID</strong></TableCell>
-                  <TableCell><strong>Amount (£)</strong></TableCell>
-                  <TableCell><strong>Recipient's Name</strong></TableCell>
-                  <TableCell><strong>Recipient's Bank Name</strong></TableCell>
-                  <TableCell><strong>Recipient's Account Number</strong></TableCell>
-                  <TableCell><strong>Notes</strong></TableCell>
-                  <TableCell><strong>Status</strong></TableCell>
+                  <TableCell>
+                    <strong>AccountID</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Amount (£)</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Recipient's Name</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Recipient's Bank Name</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Recipient's Account Number</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Notes</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Status</strong>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -183,11 +203,11 @@ const ViewPayments = () => {
         </Paper>
       )}
 
-      {/* Confirmation Modal */}
       <Dialog open={openModal} onClose={handleCloseModal}>
         <DialogTitle>Confirm Status Update</DialogTitle>
         <DialogContent>
-          Are you sure you want to mark this payment as <strong>Approved</strong>?
+          Are you sure you want to mark this payment as{" "}
+          <strong>Approved</strong>?
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal} color="secondary">
@@ -199,7 +219,6 @@ const ViewPayments = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar for feedback */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={4000}

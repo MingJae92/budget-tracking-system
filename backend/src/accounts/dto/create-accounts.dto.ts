@@ -10,9 +10,9 @@ export class CreateAccountsDto {
   address: string;
 
   @IsPhoneNumber('GB')
-  phoneNumber: string;
+  phone_number: string;
 
   @IsOptional()
   @IsString()
-  bankAccountNumber?: string;
+  bank_account_number?: string;
 }
