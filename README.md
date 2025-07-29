@@ -1,3 +1,62 @@
+# Budget Tracking System
+
+A full-stack application to manage and track your personal or business finances. Built with React, Supabase, NestJS, and Material UI.
+
+## Overview
+
+The **Budget Tracking System** allows users to:
+
+- Create and view accounts  
+- Add and manage payment entries  
+- View payment details associated with each account  
+
+
+## Tech Stack
+
+| Layer        | Technology         |
+|--------------|--------------------|
+| Frontend     | React (Vite)       |
+| Routing      | React Router v6    |
+| UI Framework | Material UI        |
+| Backend      | NestJS (Node.js)   |
+| Database     | Supabase (PostgreSQL) |
+
+## Features
+
+- View all accounts and payments  
+- Create new accounts and payment records  
+- Link payments to specific accounts  
+- Clean UI built with Material UI  
+- NestJS backend for API and business logic  
+- Supabase for data storage and retrieval  
+
+## Backend (NestJS)
+
+The backend API is built using **NestJS**, a progressive Node.js framework, which provides:
+
+- RESTful API endpoints for accounts and payments  
+- Business logic 
+- Integration with Supabase PostgreSQL database  
+
+## Supabase Integration
+
+Supabase is used as the primary database service (PostgreSQL). The NestJS backend communicates with Supabase to perform CRUD operations.
+
+Example usage in the backend:
+
+```ts
+/
+async getAccounts() {
+  const { data, error } = await this.supabase
+    .from('accounts')
+    .select('*');
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+```
+## Command to open front end and backend
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -66,4 +125,6 @@ export default tseslint.config([
     },
   },
 ])
-```
+
+
+
