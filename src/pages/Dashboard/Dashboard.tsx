@@ -114,7 +114,7 @@ const Dashboard = () => {
                           <TableCell>{account.name}</TableCell>
                           <TableCell>{account.address}</TableCell>
                           <TableCell>{account.phone_number}</TableCell>
-                          <TableCell>{account.bank_account || "N/A"}</TableCell>
+                          <TableCell>{account.bank_account_number || "N/A"}</TableCell>
                           <TableCell>{account.last_updated}</TableCell>
                         </TableRow>
                       ))}
