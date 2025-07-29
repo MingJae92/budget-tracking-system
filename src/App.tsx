@@ -10,37 +10,16 @@ import CreatePayment from "./pages/CreatePaymentPage/CreatePaymentPage";
 const App = () => {
   return (
     <Routes>
-      {/* Protected routes under /dashboard */}
-      <Route path="/" element={<Dashboard/>}>
+      <Route path="/" element={<Dashboard />}>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="accounts" element={<Accounts />} />
         <Route path="payments" element={<Payments />} />
         <Route path="create-account" element={<CreateAccount />} />
         <Route path="create-payment" element={<CreatePayment />} />
       </Route>
-
-      {/* Optional: Add login/logout, 404 fallback etc. */}
     </Routes>
   );
 };
 
 export default App;
 
-// import { ThemeProvider } from '@mui/material/styles';
-// import CssBaseline from '@mui/material/CssBaseline';
-// import LoginPage from './pages/LoginPage';
-// import { theme } from './theme/theme';
-// import Dashboard from './pages/Dashboard/Dashboard';
-
-// const App = () => {
-//   return (
-//     // <ThemeProvider theme={theme}>
-//     //   <CssBaseline />
-//     //   {/* <LoginPage /> */}
-//     //   <Dashboard/>
-//     // </ThemeProvider>
-//     <Dashboard/>
-//   );
-// };
-
-// export default App;

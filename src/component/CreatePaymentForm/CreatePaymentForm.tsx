@@ -4,11 +4,6 @@ import {
   TextField,
   Button,
   Box,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   Typography,
   Snackbar,
   Alert,
@@ -25,7 +20,6 @@ const CreatePaymentForm = () => {
     status: "Pending",
   });
 
-  const [showConfirm, setShowConfirm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -58,10 +52,6 @@ const CreatePaymentForm = () => {
         throw new Error("Amount and user ID must be valid numbers.");
       }
 
-      const response = await axios.post(
-        "http://localhost:3000/payments",
-        payload
-      );
       setSnackbar({
         open: true,
         message: "✅ Payment successfully submitted!",
@@ -168,7 +158,6 @@ const CreatePaymentForm = () => {
         </Button>
       </Box>
 
-      {/* Snackbar Alert */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}

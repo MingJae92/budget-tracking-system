@@ -1,4 +1,3 @@
-// src/types/PaymentDataTypes/PaymentDataTypes.types.ts
 export interface PaymentDataTypes {
   id?: string;
   user_id: number;

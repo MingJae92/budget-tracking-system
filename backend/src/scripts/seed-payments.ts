@@ -10,7 +10,6 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
-// Load payment data
 const payments = JSON.parse(
   fs.readFileSync(
     path.resolve(__dirname, '../data/payments_data.json'),
@@ -34,20 +33,20 @@ async function seedPayments() {
     const { error } = await supabase.from('payments').insert({
       user_id: payment.user_id,
       amount: payment.amount,
-      recipient_name: payment.recipientName, // match your DB column
-      recipient_bank_name: payment.recipientBankName, // match your DB column
-      recipient_account_number: payment.recipientAccountNumber, // match your DB column
+      recipient_name: payment.recipientName,
+      recipient_bank_name: payment.recipientBankName,
+      recipient_account_number: payment.recipientAccountNumber,
       notes: payment.notes,
       status: payment.status,
       timestamp: payment.timestamp,
     });
 
     if (error) {
-      console.error('❌ Insert error:', error.message);
+      console.error('Insert error:', error.message);
     }
   }
 
-  console.log('✅ Payments seeding complete');
+  console.log('Payments seeding complete');
 }
 
 seedPayments();

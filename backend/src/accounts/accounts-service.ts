@@ -2,12 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { CreateAccountsDto } from './dto/create-accounts.dto';
-import { UpdateAccountsDto } from './dto/update-accounts.dto'; 
+import { UpdateAccountsDto } from './dto/update-accounts.dto';
 
 @Injectable()
 export class AccountsService {
   private supabase: SupabaseClient;
-   
 
   constructor(private readonly configService: ConfigService) {
     const url = this.configService.get<string>('SUPABASE_URL');
@@ -21,34 +20,32 @@ export class AccountsService {
   }
 
   async findAll() {
-  const { data, error } = await this.supabase
-    .from('accounts')
-    .select('*')
-    .order('last_updated', { ascending: false }); // ✅ Most recently updated first
+    const { data, error } = await this.supabase
+      .from('accounts')
+      .select('*')
+      .order('last_updated', { ascending: false });
 
-  if (error) throw new Error(error.message);
-  return data;
-}
-
+    if (error) throw new Error(error.message);
+    return data;
+  }
 
   async createAccount(dto: CreateAccountsDto) {
-  const { data, error } = await this.supabase
-    .from('accounts')
-    .insert([
-      {
-        name: dto.name,
-        address: dto.address,
-        phone_number: dto.phone_number,
-        bank_account_number: dto.bank_account_number || null,
-        last_updated: new Date().toISOString(),  // <-- Add this line
-      },
-    ])
-    .select();
+    const { data, error } = await this.supabase
+      .from('accounts')
+      .insert([
+        {
+          name: dto.name,
+          address: dto.address,
+          phone_number: dto.phone_number,
+          bank_account_number: dto.bank_account_number || null,
+          last_updated: new Date().toISOString(), // <-- Add this line
+        },
+      ])
+      .select();
 
-  if (error) throw new Error(error.message);
-  return data;
-}
-
+    if (error) throw new Error(error.message);
+    return data;
+  }
 
   async updateAccount(id: string, dto: UpdateAccountsDto) {
     const { data, error } = await this.supabase

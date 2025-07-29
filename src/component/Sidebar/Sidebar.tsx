@@ -4,15 +4,14 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-} from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { SidebarRoutes } from '../SidebarRoutes/SidebarRoutes';
+} from "@mui/material";
+import { useNavigate, useLocation } from "react-router-dom";
+import { SidebarRoutes } from "../SidebarRoutes/SidebarRoutes";
 import {
   drawerStyles,
-  drawerWidth,
   listItemButtonStyles,
   listItemIconStyles,
-} from '../../styles/SidebarStyles/SidebarStyles.styles';
+} from "../../styles/SidebarStyles/SidebarStyles.styles";
 
 interface SidebarProps {
   selected: string;

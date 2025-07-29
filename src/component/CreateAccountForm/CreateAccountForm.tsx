@@ -1,5 +1,5 @@
-import React, { useState, type ChangeEvent, type FormEvent } from 'react';
-import axios from 'axios';
+import React, { useState, type ChangeEvent, type FormEvent } from "react";
+import axios from "axios";
 import {
   Box,
   TextField,
@@ -7,27 +7,27 @@ import {
   Button,
   Snackbar,
   Alert,
-} from '@mui/material';
+} from "@mui/material";
 
 const CreateAccountForm = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    phone_number: '',
-    bank_account: '',
-    last_updated: ''
+    name: "",
+    address: "",
+    phone_number: "",
+    bank_account: "",
+    last_updated: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
-    message: '',
-    severity: 'success' as 'success' | 'error',
+    message: "",
+    severity: "success" as "success" | "error",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -40,32 +40,28 @@ const CreateAccountForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Optionally: validate fields here before sending
-
-      // POST to your backend (adjust URL as needed)
-      await axios.post('http://localhost:3000/accounts', formData);
+      await axios.post("http://localhost:3000/accounts", formData);
 
       setSnackbar({
         open: true,
-        message: '✅ Account successfully created!',
-        severity: 'success',
+        message: "✅ Account successfully created!",
+        severity: "success",
       });
 
-      // Reset form
       setFormData({
-        name: '',
-        address: '',
-        phone_number: '',
-        bank_account: '',
-        last_updated: '',
+        name: "",
+        address: "",
+        phone_number: "",
+        bank_account: "",
+        last_updated: "",
       });
     } catch (error) {
       setSnackbar({
         open: true,
-        message: '❌ Failed to create account. Please try again.',
-        severity: 'error',
+        message: "❌ Failed to create account. Please try again.",
+        severity: "error",
       });
-      console.error('Submit error:', error);
+      console.error("Submit error:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -73,7 +69,7 @@ const CreateAccountForm = () => {
 
   return (
     <>
-      <Box sx={{ maxWidth: 600, mx: 'auto', p: 3 }}>
+      <Box sx={{ maxWidth: 600, mx: "auto", p: 3 }}>
         <Typography variant="h5" align="center" gutterBottom>
           Create New Account
         </Typography>
@@ -113,9 +109,9 @@ const CreateAccountForm = () => {
             fullWidth
             margin="normal"
           />
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
             <Button variant="contained" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : 'Create Account'}
+              {isSubmitting ? "Submitting..." : "Create Account"}
             </Button>
           </Box>
         </form>
@@ -124,14 +120,14 @@ const CreateAccountForm = () => {
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}
-        onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert
-          onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+          onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))}
           severity={snackbar.severity}
           variant="filled"
-          sx={{ width: '100%' }}
+          sx={{ width: "100%" }}
         >
           {snackbar.message}
         </Alert>
