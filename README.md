@@ -38,6 +38,12 @@ The backend API is built using **NestJS**, a progressive Node.js framework, whic
 - Business logic 
 - Integration with Supabase PostgreSQL database  
 
+## Command to open front end and backend
+
+- Clone the repo and npm install and then run npm start
+- Just one command to run after cloning repo and then run npm start, this will open the front end and back end
+- If you don't catch the port server for React Vite after running the single command in time, type http://localhost:5173/ and that will take you to the front end. 
+
 ## Supabase Integration
 
 Supabase is used as the primary database service (PostgreSQL). The NestJS backend communicates with Supabase to perform CRUD operations.
@@ -55,7 +61,7 @@ async getAccounts() {
 }
 
 ```
-## Command to open front end and backend
+
 
 # React + TypeScript + Vite
 

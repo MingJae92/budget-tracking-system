@@ -1,6 +1,6 @@
 // src/App.tsx
 
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Accounts from "./pages/AccountsPage/AccountsPage";
 import Payments from "./pages/PaymentsPage/PaymentsPage";
