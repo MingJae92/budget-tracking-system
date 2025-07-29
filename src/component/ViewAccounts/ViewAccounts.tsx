@@ -1,4 +1,3 @@
-// src/pages/AccountsPage.tsx
 import {
   Box,
   Typography,
@@ -18,8 +17,10 @@ import {
   CircularProgress,
   Alert,
   TablePagination,
+  Snackbar,
 } from "@mui/material";
 import { useState } from "react";
+import axios from "axios"; // <-- Added
 import { useAccounts } from "../../hooks/UseAccounts/useAccounts";
 import type Accounts from "../../types/AccountsTypes/AccountsTypes.types";
 
@@ -28,6 +29,8 @@ function ViewAccounts() {
 
   const [open, setOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // <-- Added
+  const [snackbarMessage, setSnackbarMessage] = useState(""); // <-- Added
 
   const [formData, setFormData] = useState<Accounts>({
     id: 0,
@@ -58,8 +61,18 @@ function ViewAccounts() {
     }));
   };
 
-  const handleSave = () => {
-    setOpen(false);
+  const handleSave = async () => {
+    try {
+      await axios.patch(`http://localhost:3000/accounts/${formData.id}`, formData); // adjust as needed
+      setSnackbarMessage("Account updated successfully!");
+      setSnackbarOpen(true);
+      setOpen(false);
+      window.location.reload(); // or refresh local state via a refetch
+    } catch (error) {
+      console.error("Error updating account:", error);
+      setSnackbarMessage("Failed to update account.");
+      setSnackbarOpen(true);
+    }
   };
 
   const handleChangePage = (_: unknown, newPage: number) => {
@@ -183,6 +196,14 @@ function ViewAccounts() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+      />
     </Box>
   );
 }

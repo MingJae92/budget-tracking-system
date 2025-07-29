@@ -1,3 +1,4 @@
+// src/payments/payments.service.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
@@ -6,6 +7,7 @@ import { Database } from 'src/types/DataBaseTypes/DataBaseTypes.types';
 
 @Injectable()
 export class PaymentsService {
+  [x: string]: any;
   private supabase: SupabaseClient<Database>;
 
   constructor(private readonly configService: ConfigService) {
@@ -19,25 +21,36 @@ export class PaymentsService {
     this.supabase = createClient<Database>(url, key);
   }
 
-  // Get all payments ordered by timestamp descending (newest first)
   async findAll(): Promise<PaymentDataTypes[]> {
     const { data, error } = await this.supabase
       .from('payments')
       .select('*')
-      .order('timestamp', { ascending: false }); // <-- sort by newest
+      .order('timestamp', { ascending: false });
 
     if (error) throw new Error(error.message);
     return data ?? [];
   }
 
-  // Insert new payment and return the inserted row
   async create(paymentData: PaymentDataTypes): Promise<PaymentDataTypes[]> {
     const { data, error } = await this.supabase
       .from('payments')
       .insert([paymentData])
-      .select(); // select returns inserted rows
+      .select();
 
     if (error) throw new Error(error.message);
     return data ?? [];
+  }
+
+  // ✅ NEW: Update payment status
+  async updateStatus(id: string, status: string): Promise<PaymentDataTypes | null> {
+    const { data, error } = await this.supabase
+      .from('payments')
+      .update({ status })
+      .eq('id', id)
+      .select()
+      .single(); // Expect a single result
+
+    if (error) throw new Error(error.message);
+    return data;
   }
 }
