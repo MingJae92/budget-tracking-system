@@ -52,9 +52,11 @@ const CreatePaymentForm = () => {
         throw new Error("Amount and user ID must be valid numbers.");
       }
 
+      await axios.post("http://localhost:3000/payments", payload);
+
       setSnackbar({
         open: true,
-        message: "✅ Payment successfully submitted!",
+        message: "Payment successfully submitted!",
         severity: "success",
       });
 
@@ -70,7 +72,7 @@ const CreatePaymentForm = () => {
     } catch (error) {
       setSnackbar({
         open: true,
-        message: "❌ Failed to submit payment. Please try again.",
+        message: "Failed to submit payment. Please try again.",
         severity: "error",
       });
       console.error("Submit error:", error);
