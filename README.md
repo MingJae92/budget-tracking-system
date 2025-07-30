@@ -28,7 +28,30 @@ The **Budget Tracking System** allows users to:
 - Link payments to specific accounts  
 - Clean UI built with Material UI  
 - NestJS backend for API and business logic  
-- Supabase for data storage and retrieval  
+- Supabase for data storage and retrieval
+
+## Optimsation
+
+- Implement the following:
+- Unit testing, integration test, end to end testing
+- Modulise my dialog component
+- Deployment ready for production
+- User Authentication & Authorization:
+- Implement user sign-up/login flows (e.g., with JWT, OAuth, or Supabase Auth).
+- Role-based access control (e.g., admin vs regular users).
+- Real-Time Updates:
+- Use WebSockets or server-sent events to push payment/account updates live to users without needing to refresh.
+- Filtering and Searching:
+- Add filters for payments by date range, status (pending/approved), account, or amount.
+- Add a search bar to quickly find accounts or payments by recipient name or account number.
+- Sorting & Advanced Pagination:
+- Allow users to sort tables by columns (date, amount, status).
+- Infinite scrolling or server-side pagination for better performance with large datasets.
+- Mobile Responsiveness & PWA:
+- Ensure the UI works well on all screen sizes.
+- Convert to Progressive Web App for offline support and installability.
+
+
 
 ## Backend (NestJS)
 
@@ -36,7 +59,8 @@ The backend API is built using **NestJS**, a progressive Node.js framework, whic
 
 - RESTful API endpoints for accounts and payments  
 - Business logic 
-- Integration with Supabase PostgreSQL database  
+- Integration with Supabase PostgreSQL database
+
 
 ## Command to open front end and backend
 
